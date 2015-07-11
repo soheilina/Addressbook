@@ -68,6 +68,8 @@ public slots:   //?? what is it?!
     void editContact();
     void removeContact();
     void findContact();
+    void saveToFile();
+    void loadFromFile();
 
 private:
     void updateInterface(Mode mode);
@@ -82,6 +84,9 @@ private:
     QPushButton *editButton;
     QPushButton *findButton;
     FindDialog *dialog;
+    QPushButton *loadButton;
+    QPushButton *saveButton;
+
 
     QMap<QString,QString> contacts; //a container to store our address book contacts, so that we can traverse and display them
     QString oldName;
