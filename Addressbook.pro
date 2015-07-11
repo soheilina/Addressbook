@@ -14,9 +14,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    addressbook.cpp
+    addressbook.cpp \
+    finddialog.cpp
 
 HEADERS  += mainwindow.h \
-    addressbook.h
+    addressbook.h \
+    finddialog.h
 
 FORMS    += mainwindow.ui

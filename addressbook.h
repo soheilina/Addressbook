@@ -41,6 +41,7 @@
 #ifndef ADDRESSBOOK_H
 #define ADDRESSBOOK_H
 
+#include "finddialog.h"
 #include <QWidget>
 #include <QMap>
 
@@ -66,6 +67,7 @@ public slots:   //?? what is it?!
     void previous();
     void editContact();
     void removeContact();
+    void findContact();
 
 private:
     void updateInterface(Mode mode);
@@ -78,6 +80,8 @@ private:
     QPushButton *previousButton;
     QPushButton *removeButton;
     QPushButton *editButton;
+    QPushButton *findButton;
+    FindDialog *dialog;
 
     QMap<QString,QString> contacts; //a container to store our address book contacts, so that we can traverse and display them
     QString oldName;

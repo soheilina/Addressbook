@@ -70,6 +70,12 @@ AddressBook::AddressBook(QWidget *parent)//why pointer?
     editButton->setEnabled(false);
     removeButton = new QPushButton(tr("&Remove"));
     removeButton->setEnabled(false);
+    findButton = new QPushButton(tr("&Find"));
+    findButton->setEnabled(false);
+
+    //--
+    dialog = new FindDialog;
+
     //--Connections
     connect(addButton, SIGNAL(clicked()), this, SLOT(addContact()));
     connect(submitButton, SIGNAL(clicked()), this, SLOT(submitContact()));
@@ -78,6 +84,7 @@ AddressBook::AddressBook(QWidget *parent)//why pointer?
     connect(previousButton, SIGNAL(clicked()), this, SLOT(previous()));
     connect(removeButton, SIGNAL(clicked()), this, SLOT(removeContact()));
     connect(editButton, SIGNAL(clicked()), this, SLOT(editContact()));
+    connect(findButton, SIGNAL(clicked()), this, SLOT(findContact()));
 
     // arrange our push buttons neatly to the right of our address book widget
     QVBoxLayout *buttonLayout1 = new QVBoxLayout;
@@ -86,6 +93,7 @@ AddressBook::AddressBook(QWidget *parent)//why pointer?
     buttonLayout1->addWidget(cancelButton);
     buttonLayout1->addWidget(editButton);
     buttonLayout1->addWidget(removeButton);
+    buttonLayout1->addWidget(findButton);
     buttonLayout1->addStretch(); //is used to ensure the push buttons are not evenly spaced, but arranged closer to the top of the widget
 
     QHBoxLayout *buttonLayout2 = new QHBoxLayout;
@@ -286,6 +294,7 @@ void AddressBook :: updateInterface(Mode mode){
         int number = contacts.size();
         editButton->setEnabled(number >= 1);
         removeButton->setEnabled(number >= 1);
+        findButton->setEnabled(number > 2);
         nextButton->setEnabled(number > 1);
         previousButton->setEnabled(number >1 );
 
@@ -293,4 +302,24 @@ void AddressBook :: updateInterface(Mode mode){
         cancelButton->hide();
         break;
     }
+}
+
+void AddressBook::findContact()
+{
+    dialog->show();
+
+    if (dialog->exec() == QDialog::Accepted) {
+        QString contactName = dialog->getFindText();
+
+        if (contacts.contains(contactName)) {
+            nameLine->setText(contactName);
+            addressText->setText(contacts.value(contactName));
+        } else {
+            QMessageBox::information(this, tr("Contact Not Found"),
+                tr("Sorry, \"%1\" is not in your address book.").arg(contactName));
+            return;
+        }
+    }
+
+    updateInterface(NavigationMode);
 }
